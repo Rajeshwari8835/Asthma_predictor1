@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(BASE_DIR, "ML_Final.pkl")
+model_path = os.path.join(BASE_DIR, "ML_Final(1).pkl")
 
 with open(model_path, "rb") as f:
     model = pickle.load(f)

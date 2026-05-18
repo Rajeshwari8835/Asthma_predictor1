@@ -19,7 +19,7 @@ with open("patient.pkl", "rb") as file:
 print("Patient model loaded!")
 
 # Load Final Model (if any)
-with open("ML project.pkl", "rb") as file:
+with open("ML_FINAL(1).pkl", "rb") as file:
     final_model = pickle.load(file)
 
 print("Final model loaded!")
