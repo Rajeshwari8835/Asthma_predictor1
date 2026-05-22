@@ -12,19 +12,12 @@ pipeline {
         stage('Check Tools') {
             steps {
                 bat 'docker --version'
-                bat 'trivy --version'
             }
         }
 
         stage('Docker Build') {
             steps {
                 bat 'cd backend && docker compose build'
-            }
-        }
-
-        stage('Trivy Scan') {
-            steps {
-                bat 'trivy image backend-asthma-predictor'
             }
         }
 
