@@ -3,34 +3,61 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
+        stage('Git Version Check') {
             steps {
-                echo 'Repository cloned successfully'
+                bat 'git --version'
             }
         }
 
-        stage('Check Tools') {
+        stage('Install Dependencies') {
             steps {
-                bat 'docker --version'
+                bat 'pip install -r backend\\requirements.txt'
             }
         }
 
-        stage('Docker Build') {
+        stage('OWASP Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan .',
+                odcInstallation: 'DependencyCheck'
+            }
+        }
+
+        stage('Publish OWASP Report') {
+            steps {
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    bat 'sonar-scanner'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 bat 'cd backend && docker compose build'
             }
         }
 
-        stage('Run Containers') {
+        stage('Trivy Scan') {
+            steps {
+                bat 'trivy image backend-asthma-predictor'
+            }
+        }
+
+        stage('Deploy Container') {
             steps {
                 bat 'cd backend && docker compose up -d'
             }
         }
+    }
 
-        stage('Check Running Containers') {
-            steps {
-                bat 'docker ps'
-            }
+    post {
+        always {
+            echo 'Pipeline completed'
         }
     }
 }
