@@ -35,8 +35,7 @@ pipeline {
                     sonar-scanner ^
                     -Dsonar.projectKey=AsthmaPredictor ^
                     -Dsonar.sources=. ^
-                    -Dsonar.host.url=http://localhost:9000 ^
-                    -Dsonar.login=%SONAR_TOKEN%
+                    -Dsonar.host.url=http://localhost:9000
                     '''
                 }
             }
