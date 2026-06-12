@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import pickle
 import numpy as np
 import os
+import uvicorn
 
 app = FastAPI()
 
@@ -39,3 +40,6 @@ def predict(data: dict):
     prediction = model.predict(features)[0]
 
     return {"prediction": int(prediction)}
+
+    if __name__ == "__main__":
+        uvicorn.run(app, host="0.0.0.0", port=8000)
