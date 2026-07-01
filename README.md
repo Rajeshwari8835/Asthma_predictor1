@@ -50,10 +50,6 @@ pip install fastapi uvicorn numpy pandas scikit-learn
 
 python -m uvicorn app:app --reload
 
-8. Open browser
-
-http://127.0.0.1:8000/docs
-
 ## Features
 - Asthma risk prediction
 - AI based analysis
