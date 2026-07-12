@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Git Version Check') {
+            steps {
+                bat 'git --version'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                bat 'pip install -r backend\\requirements.txt'
+            }
+        }
+
+        stage('OWASP Dependency Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan .',
+                odcInstallation: 'DependencyCheck'
+            }
+        }
+
+        stage('Publish OWASP Report') {
+            steps {
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube-server') {
+                    bat '''
+                    sonar-scanner ^
+                    -Dsonar.projectKey=AsthmaPredictor ^
+                    -Dsonar.sources=. ^
+                    -Dsonar.host.url=http://localhost:9000
+                    '''
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'cd backend && docker-compose build'
+            }
+        }
+
+        stage('Trivy Scan') {
+            steps {
+                bat 'trivy image backend-asthma-predictor'
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                bat 'cd backend && docker-compose up -d'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed'
+        }
+    }
+}

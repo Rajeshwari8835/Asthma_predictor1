@@ -27,9 +27,11 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* ✅ NEW BACKGROUND */
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1920&q=80')
+    no-repeat center center/cover;
+
     min-height: 100vh;
     color: var(--text-color);
     overflow-x: hidden;
@@ -78,7 +80,7 @@ nav.scrolled {
     padding: 0 20px;
 }
 
-/* GLASS CARD */
+/* FIXED BOX SHADOW HERE */
 .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
@@ -86,7 +88,9 @@ nav.scrolled {
     border-radius: 20px;
     padding: 60px;
     max-width: 800px;
+
     box-shadow: 0 8px 32px rgba(0,0,0,0.37);
+
     animation: fadeIn 1.5s ease-out;
 }
 
